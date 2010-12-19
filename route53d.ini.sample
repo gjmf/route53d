@@ -1,9 +1,3 @@
-#
-# Sample route53d configuration file.
-#
-# $Id$
-#
-
 [server]
 # The number of worker children to spawn
 processes = 5
