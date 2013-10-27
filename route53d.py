@@ -166,7 +166,7 @@ class Route53HostedZoneRequest(object):
                 logging.debug('populating %s %s' % (rrset.name, rrset.type))
                 for rr in rrset.resource_records:
                     rdatas.append(str(rr))
-            if result.is_truncated and (result.next_record_name != qname.to_text() \
+            if result.is_truncated and (result.next_record_name != qname.to_text()
                     or result.next.record_type != qtype):
                 break
 
@@ -819,7 +819,7 @@ def _get_section(self, section, count):
                                      self.message.origin)
 
             if deleting == dns.rdataclass.ANY or \
-               (deleting == dns.rdataclass.NONE and \
+               (deleting == dns.rdataclass.NONE and
                 section is self.message.answer):
                 covers = dns.rdatatype.NONE
             else:
