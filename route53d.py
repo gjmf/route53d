@@ -203,16 +203,16 @@ class Route53HostedZoneRequest(object):
             logging.error('invalid response: %s' % result)
             raise
         else:
-            id = info.get('Id').lstrip('/change/')
+            change_id = info.get('Id').lstrip('/change/')
             status = info.get('Status')
-            logging.info('ChangeID: %s Status: %s' % (id, status))
+            logging.info('ChangeID: %s Status: %s' % (change_id, status))
             if status == 'PENDING':
                 global q
                 try:
-                    q.put(id)
+                    q.put(change_id)
                 except Full:
                     logging.warn('status poller queue full, '
-                                 'discarding change %s' % id)
+                                 'discarding change %s' % change_id)
 
 #############################################################################
 
@@ -491,7 +491,7 @@ class UDPDNSHandler(SocketServer.BaseRequestHandler):
             assert type(n) is dns.name.Name, 'qname is not Name obj'
             assert type(c) is IntType, 'qclass is not Int obj'
             assert type(t) is IntType, 'qtype is not Int obj'
-            return (n, c, t)
+            return n, c, t
 
 
     def get_question(self, msg):
@@ -939,16 +939,16 @@ def bind_socket():
         return server
 
 
-def parse_config(file):
+def parse_config(filename):
     """Parse the config file into the `config' global variable."""
 
     global config
     config = ConfigParser.SafeConfigParser()
 
     try:
-        config.readfp(open(file))
+        config.readfp(open(filename))
     except Exception, e:
-        print('error parsing %s config file: %s' % (file, e))
+        print('error parsing %s config file: %s' % (filename, e))
         sys.stdout.flush()
         sys.stderr.flush()
         sys.exit(1)
@@ -1005,12 +1005,12 @@ def status_poller():
 
     while True:
         try:
-            id = q.get_nowait()
+            change_id = q.get_nowait()
         except Empty:
             logging.debug('queue is empty')
         else:
             # XXX catch exceptions!
-            result = cnxn.get_change(id)
+            result = cnxn.get_change(change_id)
             logging.debug(result)
 
             try:
@@ -1021,13 +1021,13 @@ def status_poller():
                 raise
             else:
                 status = info.get('Status')
-                logging.info('ChangeID: %s Status: %s' % (id, status))
+                logging.info('ChangeID: %s Status: %s' % (change_id, status))
                 if status == 'PENDING':
                     try:
-                        q.put(id)
+                        q.put(change_id)
                     except Full:
                         logging.warn('status poller queue full, '
-                                     'discarding change %s' % id)
+                                     'discarding change %s' % change_id)
         finally:
             time.sleep(2)
 
