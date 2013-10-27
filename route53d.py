@@ -51,6 +51,7 @@ import dns.rdatatype
 import dns.tsigkeyring
 import boto.route53
 import boto.route53.record
+import boto.route53.exception
 
 #############################################################################
 
@@ -764,7 +765,7 @@ def _get_section(self, section, count):
         self.current = self.current + 10
         if rdtype == dns.rdatatype.OPT:
             if not section is self.message.additional or seen_opt:
-                raise BadEDNS
+                raise dns.message.BadEDNS()
             self.message.payload = rdclass
             self.message.ednsflags = ttl
             self.message.edns = (ttl & 0xff0000) >> 16
@@ -784,7 +785,7 @@ def _get_section(self, section, count):
         elif rdtype == dns.rdatatype.TSIG:
             if not (section is self.message.additional and
                     i == (count - 1)):
-                raise BadTSIG
+                raise dns.message.BadTSIG()
             if self.message.keyring is None:
                 raise dns.message.UnknownTSIGKey('got signed message without keyring')
             secret = self.message.keyring.get(absolute_name)
