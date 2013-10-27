@@ -348,7 +348,7 @@ class UDPDNSHandler(SocketServer.BaseRequestHandler):
                     response.set_rcode(dns.rcode.FORMERR)
                     return response
 
-                logging.warn('UPDATE unsupported delete from %s: %s %s' % \
+                logging.warn('UPDATE unsupported delete from %s: %s' % \
                                                         (remote_ip, rrset))
                 response.set_rcode(dns.rcode.REFUSED)
                 return response
