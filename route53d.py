@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 #
-# Copyright (c) 2010-2012 James Raftery <james@now.ie>
+# Copyright (c) 2010-2013 James Raftery <james@now.ie>
 # All rights reserved.
 # $Revision$ $Date$
 #
