@@ -11,12 +11,10 @@ transfer (IXFR) and pushing zones changes to the API is nearly complete.
 
 REQUIREMENTS
 
- + Python
+ + Python 2.6 or 2.7
    http://www.python.org/
- + boto
+ + boto 2.0+
    https://github.com/boto/boto
-   Route 53 support isn't yet in a Boto release. Take a source snapshot
-   from Github.
  + dnspython
    http://www.dnspython.org/
  + An active Amazon Route53 account
@@ -58,7 +56,7 @@ See http://code.google.com/p/route53d/wiki/TODO
 
 LICENSE
 
-This software is released under a 3-clause BSD licence. The licence
-text is in the script.
+See COPYRIGHT file.
+
 
 $Id$
